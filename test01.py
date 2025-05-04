@@ -1,1 +1,1 @@
-print('hello from v2')
+print(hello from v2')
