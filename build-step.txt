@@ -1,0 +1,30 @@
+build step
+shell code
+
+#!/bin/bash
+set -e # Fail the job if any command fails
+
+echo "🔄 Starting Laravel Deployment..."
+
+#cd /var/lib/jenkins/workspace/test.com /var/www/vhosts/test.com/httpdocs/ # to many args
+#rsync -avz --delete /var/lib/jenkins/workspace/test.com/ /var/www/vhosts/test.com/httpdocs/
+#rsync -avz --delete --no-group --exclude=index.html ./ /var/www/vhosts/test.com/httpdocs/
+rsync -avz --no-times --no-group --delete ./ /var/www/vhosts/test.com/httpdocs/
+
+
+
+# Install PHP dependencies
+composer install --no-interaction --prefer-dist --optimize-autoloader
+
+# Fix directory permissions (Laravel needs write access)
+chmod -R 775 storage bootstrap/cache
+
+# Laravel commands # need mysql install in server
+#php artisan config:cache
+#php artisan route:cache
+#php artisan migrate --force
+
+echo "✅ Laravel Deployment Complete"
+
+
+
